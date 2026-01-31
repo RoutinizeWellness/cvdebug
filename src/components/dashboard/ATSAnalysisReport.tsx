@@ -25,8 +25,9 @@ export function ATSAnalysisReport({
   onEditWithSniper,
   onOpenWritingForge,
   onDownloadPDF,
-  onUpgrade
-}: ATSAnalysisReportProps) {
+  onUpgrade,
+  compactMode = false
+}: ATSAnalysisReportProps & { compactMode?: boolean }) {
   const { t } = useI18n();
   const score = resume?.score || 0; // No fake score - show real data only
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
@@ -211,191 +212,197 @@ export function ATSAnalysisReport({
   const showQuantificationBanner = isPaidUser && missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
 
   return (
-    <div className="relative w-full bg-[#F8FAFC] min-h-screen overflow-y-auto">
+    <div className={`relative w-full ${compactMode ? 'bg-transparent' : 'bg-[#F8FAFC] min-h-screen'} overflow-y-auto`}>
       {/* Background Decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
-      </div>
+      {!compactMode && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
+          <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
+        </div>
+      )}
 
       <div className="relative w-full z-10">
         {/* Main Content */}
-        <main className="flex flex-col items-center justify-start py-4 md:py-8 lg:py-12 px-3 md:px-6 w-full max-w-7xl mx-auto">
+        <main className={`flex flex-col items-center justify-start ${compactMode ? 'py-0' : 'py-4 md:py-8 lg:py-12'} px-3 md:px-6 w-full max-w-7xl mx-auto`}>
           {/* Header with Logo - Mobile Optimized */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="w-full flex justify-center mb-4 md:mb-6"
-          >
-            <div className="flex items-center">
-              <img
-                src="/favicon.png?v=22"
-                alt="CVDebug Logo"
-                className="w-12 h-12"
-              />
-            </div>
-          </motion.div>
+          {!compactMode && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full flex justify-center mb-4 md:mb-6"
+            >
+              <div className="flex items-center">
+                <img
+                  src="/favicon.png?v=22"
+                  alt="CVDebug Logo"
+                  className="w-12 h-12"
+                />
+              </div>
+            </motion.div>
+          )}
 
-          {/* Hero Section - Mobile Optimized */}
-          <div className="w-full bg-[#FFFFFF] rounded-xl md:rounded-2xl shadow-xl border border-[#E2E8F0] p-4 md:p-8 lg:p-12 mb-6 md:mb-8">
-            <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-12">
-              {/* Left: Score Circle - Responsive Size */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 shrink-0"
-              >
-                {/* Subtle Glow Background */}
-                <div className="absolute inset-0 bg-slate-200/40 blur-[30px] rounded-full"></div>
+          {/* Hero Section - Only show if not compact */}
+          {!compactMode && (
+            <div className="w-full bg-[#FFFFFF] rounded-xl md:rounded-2xl shadow-xl border border-[#E2E8F0] p-4 md:p-8 lg:p-12 mb-6 md:mb-8">
+              <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-12">
+                {/* Left: Score Circle - Responsive Size */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 shrink-0"
+                >
+                  {/* Subtle Glow Background */}
+                  <div className="absolute inset-0 bg-slate-200/40 blur-[30px] rounded-full"></div>
 
-                {/* SVG Circle Progress */}
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-                  {/* Gradient Definition for Cyber Effect */}
-                  <defs>
-                    <linearGradient id="cyber-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" style={{ stopColor: "#475569", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
-                    </linearGradient>
-                    <filter id="glow">
-                      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                      <feMerge>
-                        <feMergeNode in="coloredBlur" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  {/* Track */}
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="85"
-                    fill="none"
-                    stroke="rgba(148, 163, 184, 0.15)"
-                    strokeWidth="14"
-                  />
-                  {/* Indicator with Cyber Gradient */}
-                  <motion.circle
-                    cx="100"
-                    cy="100"
-                    r="85"
-                    fill="none"
-                    stroke={scorePercentage >= 80 ? "url(#cyber-gradient)" : scorePercentage >= 60 ? "#d97706" : "#dc2626"}
-                    strokeWidth="14"
-                    strokeLinecap="round"
-                    strokeDasharray={534}
-                    initial={{ strokeDashoffset: 534 }}
-                    animate={{ strokeDashoffset: 534 - (534 * scorePercentage) / 100 }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-                    filter={scorePercentage >= 80 ? "url(#glow)" : undefined}
-                  />
-                </svg>
+                  {/* SVG Circle Progress */}
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                    {/* Gradient Definition for Cyber Effect */}
+                    <defs>
+                      <linearGradient id="cyber-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style={{ stopColor: "#475569", stopOpacity: 1 }} />
+                        <stop offset="100%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
+                      </linearGradient>
+                      <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                        <feMerge>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    {/* Track */}
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="85"
+                      fill="none"
+                      stroke="rgba(148, 163, 184, 0.15)"
+                      strokeWidth="14"
+                    />
+                    {/* Indicator with Cyber Gradient */}
+                    <motion.circle
+                      cx="100"
+                      cy="100"
+                      r="85"
+                      fill="none"
+                      stroke={scorePercentage >= 80 ? "url(#cyber-gradient)" : scorePercentage >= 60 ? "#d97706" : "#dc2626"}
+                      strokeWidth="14"
+                      strokeLinecap="round"
+                      strokeDasharray={534}
+                      initial={{ strokeDashoffset: 534 }}
+                      animate={{ strokeDashoffset: 534 - (534 * scorePercentage) / 100 }}
+                      transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                      filter={scorePercentage >= 80 ? "url(#glow)" : undefined}
+                    />
+                  </svg>
 
-                {/* Inner Content - Responsive Text */}
-                <div className="absolute flex flex-col items-center justify-center">
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.5, type: "spring" }}
-                    className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight ${scorePercentage >= 80
+                  {/* Inner Content - Responsive Text */}
+                  <div className="absolute flex flex-col items-center justify-center">
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring" }}
+                      className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight ${scorePercentage >= 80
                         ? 'text-gradient-cyber'
                         : 'bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent'
-                      }`}
-                  >
-                    {scorePercentage}
-                  </motion.span>
-                  <span className="text-[#475569] text-xs md:text-sm font-semibold tracking-wide uppercase mt-1">
-                    ATS Score
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Right: Info & Actions - Mobile Optimized */}
-              <div className="flex-1 space-y-4 md:space-y-6 text-center lg:text-left w-full">
-                {/* Status Badge - Mobile Optimized */}
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-green-50 border border-green-200"
-                >
-                  <span className="relative flex h-2 w-2 md:h-2.5 md:w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-full w-full bg-[#22C55E]"></span>
-                  </span>
-                  <span className="text-green-700 text-xs md:text-sm font-semibold">Analysis Complete</span>
-                </motion.div>
-
-                {/* Title - Mobile Optimized */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="space-y-1 md:space-y-2"
-                >
-                  <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0F172A]">
-                    Your ATS Analysis Results
-                  </h1>
-                  {targetRole && (
-                    <p className="text-[#475569] text-sm md:text-base lg:text-lg">
-                      Optimized for <span className="font-semibold text-cyan-600">{targetRole}</span>
-                    </p>
-                  )}
-                </motion.div>
-
-                {/* Score Interpretation - Mobile Optimized */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="space-y-2 md:space-y-3"
-                >
-                  <div className="flex flex-col sm:flex-row items-center gap-2 md:gap-3 justify-center lg:justify-start">
-                    <div className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-sm md:text-base lg:text-lg ${scorePercentage >= 80 ? 'bg-green-100 text-green-700' :
-                        scorePercentage >= 60 ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-red-100 text-red-700'
-                      }`}>
-                      Grade: {getVisibilityGrade(scorePercentage)}
-                    </div>
-                    <span className="text-[#475569] text-sm md:text-base">
-                      {scorePercentage >= 80 ? 'Excellent visibility!' : scorePercentage >= 60 ? 'Good, needs work' : 'Needs improvement'}
+                        }`}
+                    >
+                      {scorePercentage}
+                    </motion.span>
+                    <span className="text-[#475569] text-xs md:text-sm font-semibold tracking-wide uppercase mt-1">
+                      ATS Score
                     </span>
                   </div>
-                  <p className="text-xs md:text-sm text-[#64748B] max-w-2xl leading-relaxed">
-                    {scorePercentage >= 80
-                      ? 'Your resume is highly optimized for ATS systems. Recruiters can easily find and parse your information.'
-                      : scorePercentage >= 60
-                        ? 'Your resume passes basic ATS requirements but has room for optimization to improve visibility.'
-                        : 'Your resume may struggle with ATS systems. Follow the recommendations below to improve your score.'}
-                  </p>
                 </motion.div>
 
-                {/* Primary CTA - Mobile Optimized */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="flex flex-col sm:flex-row gap-2 md:gap-3 justify-center lg:justify-start"
-                >
-                  <button
-                    onClick={onOpenWritingForge}
-                    className="btn-power px-5 md:px-6 py-2.5 md:py-3 rounded-lg text-[#0F172A] text-sm md:text-base font-semibold border-0 flex items-center justify-center gap-2 group w-full sm:w-auto"
+                {/* Right: Info & Actions - Mobile Optimized */}
+                <div className="flex-1 space-y-4 md:space-y-6 text-center lg:text-left w-full">
+                  {/* Status Badge - Mobile Optimized */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-green-50 border border-green-200"
                   >
-                    <span>Optimize Now</span>
-                    <span className="material-symbols-outlined text-base md:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                  </button>
-                  <button
-                    onClick={onDownloadPDF}
-                    className="px-5 md:px-6 py-2.5 md:py-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] hover:border-slate-400 text-[#475569] text-sm md:text-base font-semibold transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
+                    <span className="relative flex h-2 w-2 md:h-2.5 md:w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-full w-full bg-[#22C55E]"></span>
+                    </span>
+                    <span className="text-green-700 text-xs md:text-sm font-semibold">Analysis Complete</span>
+                  </motion.div>
+
+                  {/* Title - Mobile Optimized */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="space-y-1 md:space-y-2"
                   >
-                    <span className="material-symbols-outlined text-base md:text-lg">download</span>
-                    <span>Download Report</span>
-                  </button>
-                </motion.div>
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0F172A]">
+                      Your ATS Analysis Results
+                    </h1>
+                    {targetRole && (
+                      <p className="text-[#475569] text-sm md:text-base lg:text-lg">
+                        Optimized for <span className="font-semibold text-cyan-600">{targetRole}</span>
+                      </p>
+                    )}
+                  </motion.div>
+
+                  {/* Score Interpretation - Mobile Optimized */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="space-y-2 md:space-y-3"
+                  >
+                    <div className="flex flex-col sm:flex-row items-center gap-2 md:gap-3 justify-center lg:justify-start">
+                      <div className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-sm md:text-base lg:text-lg ${scorePercentage >= 80 ? 'bg-green-100 text-green-700' :
+                        scorePercentage >= 60 ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                        }`}>
+                        Grade: {getVisibilityGrade(scorePercentage)}
+                      </div>
+                      <span className="text-[#475569] text-sm md:text-base">
+                        {scorePercentage >= 80 ? 'Excellent visibility!' : scorePercentage >= 60 ? 'Good, needs work' : 'Needs improvement'}
+                      </span>
+                    </div>
+                    <p className="text-xs md:text-sm text-[#64748B] max-w-2xl leading-relaxed">
+                      {scorePercentage >= 80
+                        ? 'Your resume is highly optimized for ATS systems. Recruiters can easily find and parse your information.'
+                        : scorePercentage >= 60
+                          ? 'Your resume passes basic ATS requirements but has room for optimization to improve visibility.'
+                          : 'Your resume may struggle with ATS systems. Follow the recommendations below to improve your score.'}
+                    </p>
+                  </motion.div>
+
+                  {/* Primary CTA - Mobile Optimized */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="flex flex-col sm:flex-row gap-2 md:gap-3 justify-center lg:justify-start"
+                  >
+                    <button
+                      onClick={onOpenWritingForge}
+                      className="btn-power px-5 md:px-6 py-2.5 md:py-3 rounded-lg text-[#0F172A] text-sm md:text-base font-semibold border-0 flex items-center justify-center gap-2 group w-full sm:w-auto"
+                    >
+                      <span>Optimize Now</span>
+                      <span className="material-symbols-outlined text-base md:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                    <button
+                      onClick={onDownloadPDF}
+                      className="px-5 md:px-6 py-2.5 md:py-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] hover:border-slate-400 text-[#475569] text-sm md:text-base font-semibold transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-auto"
+                    >
+                      <span className="material-symbols-outlined text-base md:text-lg">download</span>
+                      <span>Download Report</span>
+                    </button>
+                  </motion.div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Special Banner - Perfect Keywords but Need Numbers - Mobile Optimized */}
           {showQuantificationBanner && (
@@ -428,24 +435,7 @@ export function ATSAnalysisReport({
             </motion.div>
           )}
 
-          {/* ATS Overview Dashboard - Mobile Optimized */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="w-full mb-6 md:mb-8"
-          >
-            <h2 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-4 md:mb-6">Overview Analysis</h2>
-            <ATSOverviewDashboard
-              resume={resume}
-              user={user}
-              onFixIssue={(issueType: string) => {
-                console.log("Fix issue:", issueType);
-                // You can show a modal or navigate to the fix
-              }}
-              onUpgrade={onUpgrade}
-            />
-          </motion.div>
+
 
           {/* Stats Cards - Mobile Optimized */}
           <div className="w-full space-y-4 md:space-y-6 mb-6 md:mb-8">
@@ -459,20 +449,20 @@ export function ATSAnalysisReport({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                   className={`bg-[#FFFFFF] rounded-lg md:rounded-xl p-4 md:p-6 border transition-all duration-300 ${impactLevel.level === 'weak' ? 'border-red-200 hover:border-red-300' :
-                      impactLevel.level === 'good' ? 'border-amber-200 hover:border-amber-300' :
-                        'border-emerald-200 hover:border-emerald-300'
+                    impactLevel.level === 'good' ? 'border-amber-200 hover:border-amber-300' :
+                      'border-emerald-200 hover:border-emerald-300'
                     } shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow`}
                 >
                   <div className="flex justify-between items-start mb-3 md:mb-4">
                     <div className={`p-2 md:p-3 rounded-lg ${impactLevel.level === 'weak' ? 'bg-red-50 text-red-700' :
-                        impactLevel.level === 'good' ? 'bg-amber-50 text-amber-700' :
-                          'bg-emerald-50 text-emerald-700'
+                      impactLevel.level === 'good' ? 'bg-amber-50 text-amber-700' :
+                        'bg-emerald-50 text-emerald-700'
                       }`}>
                       <span className="material-symbols-outlined text-lg md:text-xl">speed</span>
                     </div>
                     <span className={`px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-semibold rounded-full ${impactLevel.level === 'weak' ? 'text-red-700 bg-red-50' :
-                        impactLevel.level === 'good' ? 'text-amber-700 bg-amber-50' :
-                          'text-emerald-700 bg-emerald-50'
+                      impactLevel.level === 'good' ? 'text-amber-700 bg-amber-50' :
+                        'text-emerald-700 bg-emerald-50'
                       }`}>
                       {impactLevel.label}
                     </span>
@@ -493,8 +483,8 @@ export function ATSAnalysisReport({
                         animate={{ width: `${Math.min(100, (metricsCount / 10) * 100)}%` }}
                         transition={{ duration: 1, delay: 0.6 }}
                         className={`h-2.5 md:h-3 rounded-full ${impactLevel.level === 'weak' ? 'bg-[#EF4444]' :
-                            impactLevel.level === 'good' ? 'bg-yellow-500' :
-                              'bg-[#22C55E]'
+                          impactLevel.level === 'good' ? 'bg-yellow-500' :
+                            'bg-[#22C55E]'
                           }`}
                       />
                       {/* Threshold markers */}

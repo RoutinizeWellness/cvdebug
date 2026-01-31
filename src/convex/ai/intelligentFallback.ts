@@ -189,18 +189,18 @@ export function generateIntelligentFallback(
 
     // Blend: Traditional (30%) + ML (20%) + Neural (25%) + NLP (25%)
     baseKeywordScore = (keywordResult.keywordScore * 0.3) +
-                       (mlPrediction.predictedScore * 0.2) +
-                       (neuralScore.predictedScore * 0.25) +
-                       (intelligentAnalysis.keywordScore * 0.25);
+      (mlPrediction.predictedScore * 0.2) +
+      (neuralScore.predictedScore * 0.25) +
+      (intelligentAnalysis.keywordScore * 0.25);
 
     baseFormatScore = (formatResult.formatScore * 0.3) +
-                      (mlFeatures.professionalTone * 0.2) +
-                      (sentimentResult.score * 100 * 0.2) +
-                      (intelligentAnalysis.formatScore * 0.3);
+      (mlFeatures.professionalTone * 0.2) +
+      (sentimentResult.score * 100 * 0.2) +
+      (intelligentAnalysis.formatScore * 0.3);
 
     baseCompletenessScore = (completenessResult.completenessScore * 0.3) +
-                            (mlFeatures.coherenceScore * 0.2) +
-                            (intelligentAnalysis.completenessScore * 0.3);
+      (mlFeatures.coherenceScore * 0.2) +
+      (intelligentAnalysis.completenessScore * 0.3);
 
     if (coherenceAnalysis) {
       baseCompletenessScore += (coherenceAnalysis.overallCoherence * 100 * 0.2);
@@ -220,16 +220,16 @@ export function generateIntelligentFallback(
     // Free users: Traditional ML + NLP scoring (slightly capped but still accurate)
     // Blend: Traditional (40%) + ML (30%) + NLP (30%)
     baseKeywordScore = (keywordResult.keywordScore * 0.4) +
-                       (mlPrediction.predictedScore * 0.3) +
-                       (intelligentAnalysis.keywordScore * 0.3);
+      (mlPrediction.predictedScore * 0.3) +
+      (intelligentAnalysis.keywordScore * 0.3);
 
     baseFormatScore = (formatResult.formatScore * 0.5) +
-                      (mlFeatures.professionalTone * 0.2) +
-                      (intelligentAnalysis.formatScore * 0.3);
+      (mlFeatures.professionalTone * 0.2) +
+      (intelligentAnalysis.formatScore * 0.3);
 
     baseCompletenessScore = (completenessResult.completenessScore * 0.4) +
-                            (mlFeatures.coherenceScore * 0.3) +
-                            (intelligentAnalysis.completenessScore * 0.3);
+      (mlFeatures.coherenceScore * 0.3) +
+      (intelligentAnalysis.completenessScore * 0.3);
 
     // Apply ML-derived bonuses
     if (mlFeatures.impactScore > 70) baseKeywordScore += 3;
@@ -290,6 +290,12 @@ export function generateIntelligentFallback(
     (finalFormatScore * 0.30) +
     (finalCompletenessScore * 0.25)
   );
+
+  // Safety check for NaN or invalid scores
+  if (isNaN(overallScore)) overallScore = 42; // Neutral baseline if ML fails
+  if (isNaN(finalKeywordScore)) finalKeywordScore = 40;
+  if (isNaN(finalFormatScore)) finalFormatScore = 50;
+  if (isNaN(finalCompletenessScore)) finalCompletenessScore = 45;
 
   // EXPERIENCE LEVEL ADJUSTMENTS
   // Different expectations for different career stages
@@ -501,8 +507,8 @@ export function generateIntelligentFallback(
     reason: overallScore > 65
       ? "⚠️ Free analysis is limited. Your REAL score could be much higher with our premium ML algorithm."
       : overallScore > 55
-      ? "🚨 Multiple critical issues detected that require professional analysis. Rescanning won't help - you need expert insights."
-      : "❌ Your resume has severe issues. Free scans won't fix this - you need premium AI-powered optimization.",
+        ? "🚨 Multiple critical issues detected that require professional analysis. Rescanning won't help - you need expert insights."
+        : "❌ Your resume has severe issues. Free scans won't fix this - you need premium AI-powered optimization.",
     potentialImprovement: Math.min(35, 93 - overallScore),
     limitationMessage: overallScore > 50
       ? "Rescanning the same resume will give the same score. To actually improve, you need our premium tools."
@@ -540,8 +546,8 @@ export function generateIntelligentFallback(
   // Determine severity based on score and issues
   const severity: 'low' | 'medium' | 'high' | 'critical' =
     overallScore < 40 ? 'critical' :
-    overallScore < 55 ? 'high' :
-    overallScore < 70 ? 'medium' : 'low';
+      overallScore < 55 ? 'high' :
+        overallScore < 70 ? 'medium' : 'low';
 
   // Note: Webhook triggering should be done from the calling function
   // to avoid circular dependencies. This result includes metadata for webhook.

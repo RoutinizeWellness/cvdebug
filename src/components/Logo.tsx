@@ -22,12 +22,12 @@ export function Logo({
 }: LogoProps) {
   // Always show only the logo image (no text)
   return (
-    <div className={cn("flex items-center", className)}>
+    <div className={cn("flex items-center justify-center", className)}>
       <img
         src="/favicon.png?v=22"
         alt="CVDebug"
         className={cn(
-          "h-12 w-12 transition-transform duration-300 hover:scale-105",
+          "h-10 w-10 transition-transform duration-300 hover:scale-110",
           iconClassName
         )}
       />

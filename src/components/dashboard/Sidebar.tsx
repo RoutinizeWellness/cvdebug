@@ -1,4 +1,4 @@
-import { FileText, Settings, Shield, LayoutDashboard, Target, Zap, PieChart, CreditCard } from "lucide-react";
+import { FileText, Settings, Shield, LayoutDashboard, Target, Zap, PieChart, CreditCard, Briefcase } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
@@ -92,7 +92,7 @@ export function Sidebar({ setShowPricing, currentView, setCurrentView }: Sidebar
       {/* 1. Logo Area */}
       <div className="flex flex-col px-6 py-6 flex-shrink-0">
         <div className="flex items-center gap-2 cursor-pointer transition-transform hover:scale-105" onClick={() => setCurrentView('mission')}>
-          <Logo iconClassName="h-9 w-auto" />
+          <Logo iconClassName="h-7 w-auto" />
         </div>
       </div>
 
@@ -139,7 +139,13 @@ export function Sidebar({ setShowPricing, currentView, setCurrentView }: Sidebar
 
         {/* APPLICATIONS */}
         <SectionHeader label="Tracking" />
-        <SidebarApplicationTracker />
+        <NavItem
+          active={currentView === 'applications'}
+          icon={<Briefcase className="w-4 h-4" />}
+          label="Application Tracker"
+          onClick={() => setCurrentView('applications')}
+        />
+        <SidebarApplicationTracker setCurrentView={setCurrentView} />
 
         {/* ACCOUNT */}
         <SectionHeader label="Account" />

@@ -36,6 +36,9 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   const scoreColor = getScoreColor(score);
 
+  // Unify phone detection logic to be more precise and support international formats
+  const PHONE_REGEX = /(\+?\d{1,4}[\s.-]?)?(\(?\d{2,5}\)?[\s.-]?)?\d{3,5}[\s.-]?\d{4,8}/;
+
   // Critical failures - USE REAL DATA and enhance with contextual messages
   const formatIssues = resume?.formatIssues || [];
   const ocrText = resume?.ocrText || "";
@@ -56,7 +59,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     }
 
     if (issueLower.includes("phone") && issueLower.includes("missing")) {
-      const hasPhone = /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/.test(ocrText);
+      const hasPhone = PHONE_REGEX.test(ocrText);
       enhancedDescription = hasPhone
         ? "Phone number detected but may not be in standard format for ATS parsing."
         : "No phone number detected. Include it for easier recruiter contact.";
@@ -69,26 +72,26 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       const incorrect = matches.filter((m: string) => {
         const lower = m.toLowerCase();
         return (lower === 'github' && m !== 'GitHub') ||
-               (lower === 'linkedin' && m !== 'LinkedIn') ||
-               (lower === 'javascript' && m !== 'JavaScript') ||
-               (lower === 'typescript' && m !== 'TypeScript') ||
-               (lower === 'nodejs' && m !== 'Node.js') ||
-               (lower === 'postgresql' && m !== 'PostgreSQL') ||
-               (lower === 'mysql' && m !== 'MySQL') ||
-               (lower === 'mongodb' && m !== 'MongoDB');
+          (lower === 'linkedin' && m !== 'LinkedIn') ||
+          (lower === 'javascript' && m !== 'JavaScript') ||
+          (lower === 'typescript' && m !== 'TypeScript') ||
+          (lower === 'nodejs' && m !== 'Node.js') ||
+          (lower === 'postgresql' && m !== 'PostgreSQL') ||
+          (lower === 'mysql' && m !== 'MySQL') ||
+          (lower === 'mongodb' && m !== 'MongoDB');
       });
 
       if (incorrect.length > 0) {
         const examples = incorrect.slice(0, 3).map((term: string) => {
           const lower = term.toLowerCase();
           const correct = lower === 'github' ? 'GitHub' :
-                         lower === 'linkedin' ? 'LinkedIn' :
-                         lower === 'javascript' ? 'JavaScript' :
-                         lower === 'typescript' ? 'TypeScript' :
-                         lower === 'nodejs' ? 'Node.js' :
-                         lower === 'postgresql' ? 'PostgreSQL' :
-                         lower === 'mysql' ? 'MySQL' :
-                         lower === 'mongodb' ? 'MongoDB' : term;
+            lower === 'linkedin' ? 'LinkedIn' :
+              lower === 'javascript' ? 'JavaScript' :
+                lower === 'typescript' ? 'TypeScript' :
+                  lower === 'nodejs' ? 'Node.js' :
+                    lower === 'postgresql' ? 'PostgreSQL' :
+                      lower === 'mysql' ? 'MySQL' :
+                        lower === 'mongodb' ? 'MongoDB' : term;
           return `${term} → ${correct}`;
         }).join(', ');
 
@@ -138,10 +141,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
       return {
         icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+          issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+            issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
               issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
-              "error",
+                "error",
         title: issue.issue,
         description: enhancedDescription,
         severity: issue.severity,
@@ -158,10 +161,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
         const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
         return {
           icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-                issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-                issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+            issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
                 issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
-                "info",
+                  "info",
           title: issue.issue,
           description: enhancedDescription,
           severity: issue.severity,
@@ -173,7 +176,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   // Contact & Socials check - DETECT from OCR text (already declared above)
   const emailDetected = /@/.test(ocrText) || !!resume?.email;
-  const phoneDetected = /\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(ocrText) || !!resume?.phone;
+  const phoneDetected = PHONE_REGEX.test(ocrText) || !!resume?.phone;
   const linkedinDetected = /linkedin\.com/i.test(ocrText) || !!resume?.linkedin;
   const githubDetected = /github\.com/i.test(ocrText) || !!resume?.github;
 
@@ -314,22 +317,19 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`p-3 md:p-4 rounded-lg md:rounded-xl border-2 ${
-                  failure.severity === "high"
-                    ? "bg-[#FEF2F2] border-[#EF4444]/30"
-                    : "bg-[#FFF7ED] border-[#F59E0B]/30"
-                }`}
+                className={`p-3 md:p-4 rounded-lg md:rounded-xl border-2 ${failure.severity === "high"
+                  ? "bg-[#FEF2F2] border-[#EF4444]/30"
+                  : "bg-[#FFF7ED] border-[#F59E0B]/30"
+                  }`}
               >
                 <div className="flex items-start gap-2 md:gap-3">
                   <div
-                    className={`w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                      failure.severity === "high" ? "bg-[#EF4444]/20" : "bg-[#F59E0B]/20"
-                    }`}
+                    className={`w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${failure.severity === "high" ? "bg-[#EF4444]/20" : "bg-[#F59E0B]/20"
+                      }`}
                   >
                     <span
-                      className={`material-symbols-outlined text-sm md:text-[16px] ${
-                        failure.severity === "high" ? "text-[#EF4444]" : "text-[#F59E0B]"
-                      }`}
+                      className={`material-symbols-outlined text-sm md:text-[16px] ${failure.severity === "high" ? "text-[#EF4444]" : "text-[#F59E0B]"
+                        }`}
                     >
                       {failure.icon}
                     </span>
@@ -350,69 +350,8 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
         </motion.div>
       </div>
 
-      {/* Middle Row: Technical vs Human Signal */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
-      >
-        <h3 className="text-lg font-bold text-[#0F172A] mb-6">Technical vs. Human Signal</h3>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Technical Signal */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#64748B]">settings</span>
-                <span className="text-sm font-semibold text-[#0F172A]">Technical Signal</span>
-              </div>
-              <span className="text-lg font-black text-[#64748B]">{technicalSignal}%</span>
-            </div>
-            <div className="h-3 bg-[#E2E8F0] rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#64748B] to-[#334155] rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${technicalSignal}%` }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              />
-            </div>
-            <p className="text-xs text-[#64748B] mt-2">
-              Format, fonts, structure — can the bot read it?
-            </p>
-          </div>
-
-          {/* Human Signal */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#1E293B]">person</span>
-                <span className="text-sm font-semibold text-[#0F172A]">Human Signal</span>
-              </div>
-              <span className="text-lg font-black text-[#1E293B]">{humanSignal}%</span>
-            </div>
-            <div className="h-3 bg-[#E2E8F0] rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${humanSignal}%` }}
-                transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-              />
-            </div>
-            <p className="text-xs text-[#64748B] mt-2">
-              Seniority, power verbs, impact — impressive to humans?
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-4 p-3 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
-          <p className="text-xs text-[#475569]">
-            <strong className="text-[#0F172A]">Balance is key:</strong> A readable resume (bot) isn't the same as a selling resume (human). You need both.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Bottom Row: Contact Info + Seniority + Impact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      {/* Bottom Row: Contact Info + Seniority */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* 4. CONTACT & SOCIALS */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -433,9 +372,8 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-3">
                 <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    item.detected ? "bg-[#22C55E]/10" : "bg-[#E2E8F0]"
-                  }`}
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center ${item.detected ? "bg-[#22C55E]/10" : "bg-[#E2E8F0]"
+                    }`}
                 >
                   <item.icon
                     className={`h-5 w-5 ${item.detected ? "text-[#22C55E]" : "text-[#64748B]"}`}
@@ -495,66 +433,6 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           </div>
         </motion.div>
 
-        {/* 6. IMPACT BREAKDOWN */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="h-5 w-5 text-[#22C55E]" />
-            <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">
-              Impact Breakdown
-            </h3>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#475569]">Action Verbs</span>
-                <span className="text-lg font-black text-[#22C55E]">{impactMetrics.actionVerbs}</span>
-              </div>
-              <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#22C55E] rounded-full"
-                  style={{ width: `${Math.min(100, (impactMetrics.actionVerbs / 15) * 100)}%` }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#475569]">Quantifiable Metrics</span>
-                <span className="text-lg font-black text-[#F59E0B]">
-                  {impactMetrics.quantifiableMetrics}/{impactMetrics.targetMetrics}
-                </span>
-              </div>
-              <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#F59E0B] rounded-full"
-                  style={{ width: `${(impactMetrics.quantifiableMetrics / impactMetrics.targetMetrics) * 100}%` }}
-                />
-              </div>
-              <p className="text-xs text-[#EF4444] font-semibold mt-1">
-                Target: {impactMetrics.targetMetrics} metrics
-              </p>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#475569]">Soft Skills</span>
-                <span className="text-lg font-black text-[#64748B]">{impactMetrics.softSkills}</span>
-              </div>
-              <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#64748B] rounded-full"
-                  style={{ width: `${Math.min(100, (impactMetrics.softSkills / 8) * 100)}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Personalized Recommendations - Full Width */}

@@ -3,7 +3,7 @@ import { Briefcase, TrendingUp } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-export function SidebarApplicationTracker() {
+export function SidebarApplicationTracker({ setCurrentView }: { setCurrentView?: (view: string) => void }) {
   const applications = useQuery(api.applications.getApplications);
 
   // Get applications with CVDebug (those created after user signed up)
@@ -35,7 +35,8 @@ export function SidebarApplicationTracker() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-[#F8FAFC] to-[#EEF2FF] border border-[#E2E8F0] rounded-lg p-3 shadow-sm"
+      className="bg-gradient-to-br from-[#F8FAFC] to-[#EEF2FF] border border-[#E2E8F0] rounded-lg p-3 shadow-sm cursor-pointer hover:border-[#1E293B] transition-all"
+      onClick={() => setCurrentView?.('applications')}
     >
       {/* Header Compacto */}
       <div className="flex items-center justify-between mb-3">
@@ -114,7 +115,13 @@ export function SidebarApplicationTracker() {
 
       {/* View All Footer */}
       {totalApplications > 3 && (
-        <button className="w-full text-[10px] text-[#1E293B] hover:text-[#334155] font-semibold mt-2 py-1 transition-colors">
+        <button
+          className="w-full text-[10px] text-[#1E293B] hover:text-[#334155] font-semibold mt-2 py-1 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentView?.('applications');
+          }}
+        >
           View All {totalApplications} →
         </button>
       )}

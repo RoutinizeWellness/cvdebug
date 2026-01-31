@@ -36,7 +36,7 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
   const improvementPercent = firstScore > 0 ? Math.round((improvement / firstScore) * 100) : 0;
 
   return (
-    <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 rounded-xl border-2 border-[#E2E8F0] dark:border-slate-700 p-6 shadow-lg">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -47,13 +47,12 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
         </div>
 
         {/* Trend Indicator */}
-        <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-          improvement > 0
+        <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${improvement > 0
             ? 'bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800'
             : improvement < 0
-            ? 'bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800'
-            : 'bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700'
-        }`}>
+              ? 'bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800'
+              : 'bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700'
+          }`}>
           {improvement > 0 ? (
             <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
           ) : improvement < 0 ? (
@@ -62,13 +61,12 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
             <Minus className="h-5 w-5 text-slate-600 dark:text-slate-400" />
           )}
           <div>
-            <div className={`text-2xl font-black ${
-              improvement > 0
+            <div className={`text-2xl font-black ${improvement > 0
                 ? 'text-green-600 dark:text-green-400'
                 : improvement < 0
-                ? 'text-red-600 dark:text-red-400'
-                : 'text-slate-600 dark:text-slate-400'
-            }`}>
+                  ? 'text-red-600 dark:text-red-400'
+                  : 'text-slate-600 dark:text-slate-400'
+              }`}>
               {improvement > 0 ? '+' : ''}{improvement}%
             </div>
             {improvementPercent !== 0 && (
@@ -163,11 +161,10 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
                 }}
               >
                 {/* Point */}
-                <div className={`w-4 h-4 rounded-full border-3 ${
-                  isLast
+                <div className={`w-4 h-4 rounded-full border-3 ${isLast
                     ? 'bg-[#64748B] border-white dark:border-slate-900 ring-4 ring-[#64748B]/30'
                     : 'bg-white dark:bg-slate-800 border-[#64748B]'
-                } cursor-pointer hover:scale-150 transition-transform shadow-lg`}></div>
+                  } cursor-pointer hover:scale-150 transition-transform shadow-lg`}></div>
 
                 {/* Tooltip */}
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
@@ -190,19 +187,19 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-[#0F172A]">
-          <div className="text-xs text-[#1E293B] dark:text-[#94A3B8] font-semibold mb-1">BEST SCORE</div>
-          <div className="text-2xl font-black text-[#0F172A] dark:text-[#CBD5E1]">{maxScore}%</div>
+        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+          <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">BEST SCORE</div>
+          <div className="text-2xl font-black text-slate-900">{maxScore}%</div>
         </div>
 
-        <div className="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-[#0F172A]">
-          <div className="text-xs text-[#1E293B] dark:text-[#94A3B8] font-semibold mb-1">CURRENT</div>
-          <div className="text-2xl font-black text-[#1E293B] dark:text-[#CBD5E1]">{lastScore}%</div>
+        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+          <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">CURRENT</div>
+          <div className="text-2xl font-black text-slate-900">{lastScore}%</div>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-          <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mb-1">ITERATIONS</div>
-          <div className="text-2xl font-black text-slate-700 dark:text-slate-300">{scoreHistory.length}</div>
+        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+          <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">ITERATIONS</div>
+          <div className="text-2xl font-black text-slate-900">{scoreHistory.length}</div>
         </div>
       </div>
 

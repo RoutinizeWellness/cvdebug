@@ -194,8 +194,8 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                         key={resume._id}
                         onClick={() => setSelectedResumeId(resume._id)}
                         className={`p-4 border rounded-xl cursor-pointer transition-all ${selectedResumeId === resume._id
-                            ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                            : "border-[#E2E8F0] dark:border-slate-800 hover:border-blue-300"
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                          : "border-[#E2E8F0] dark:border-slate-800 hover:border-blue-300"
                           }`}
                       >
                         <div className="flex items-center justify-between">
@@ -217,8 +217,8 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                           </div>
                           <div
                             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${selectedResumeId === resume._id
-                                ? "border-blue-500 bg-blue-500"
-                                : "border-gray-300"
+                              ? "border-blue-500 bg-blue-500"
+                              : "border-gray-300"
                               }`}
                           >
                             {selectedResumeId === resume._id && (
@@ -269,11 +269,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     <h1 className="text-4xl font-black text-[#0F172A] dark:text-white tracking-tighter">
                       {t.eliteMatch.title}
                     </h1>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-black uppercase tracking-widest rounded border border-green-100">
-                        Private Llama-3 ML
-                      </span>
-                    </div>
+                    {/* Llama text removed */}
                   </div>
                 </div>
 

@@ -104,53 +104,52 @@ export function MissionControl({ onNavigate, onUpload }: MissionControlProps) {
 
   return (
     <div className="space-y-10 pb-24 md:pb-10 max-w-6xl mx-auto px-4 font-sans">
-      {/* 1. HERO MISSION SECTION */}
-      <header className="relative py-12 px-8 bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl border border-slate-800">
+      {/* 1. HERO MISSION SECTION - Reverted to clean white/light theme */}
+      <header className="relative py-10 px-8 bg-white rounded-[2rem] overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] border border-slate-100">
         {/* Background Decorative Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] -mr-48 -mt-48"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] -ml-48 -mb-48"></div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-50 rounded-full blur-[100px] -mr-48 -mt-48 opacity-60"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-50 rounded-full blur-[100px] -ml-48 -mb-48 opacity-60"></div>
 
         <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 mb-6 backdrop-blur-sm">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 mb-6 font-mono">
+            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">
               SYSTEM_READY :: {new Date().toLocaleTimeString()}
             </span>
           </div>
 
-          <h2 className="text-white/60 text-lg md:text-xl font-medium mb-4">
-            Welcome back, <span className="text-white font-black">{userName}</span>. Your current visibility:
+          <h2 className="text-slate-500 text-lg md:text-xl font-medium mb-4">
+            Welcome back, <span className="text-slate-900 font-black">{userName}</span>. Your current visibility:
           </h2>
 
           {/* MASTER GAUGE */}
           <div className="relative mb-10 group transition-transform duration-500 hover:scale-105">
-            <div className={`text-[120px] md:text-[160px] font-black leading-none tracking-tighter flex flex-col items-center ${visibilityScore < 50 ? 'text-rose-500 drop-shadow-[0_0_30px_rgba(244,63,94,0.3)]' :
-              visibilityScore < 80 ? 'text-amber-500 drop-shadow-[0_0_30px_rgba(245,158,11,0.3)]' :
-                'text-emerald-500 drop-shadow-[0_0_30px_rgba(16,185,129,0.3)]'
+            <div className={`text-[120px] md:text-[160px] font-black leading-none tracking-tighter flex flex-col items-center ${visibilityScore < 50 ? 'text-rose-600' :
+              visibilityScore < 80 ? 'text-amber-600' :
+                'text-emerald-600'
               }`}>
               {visibilityScore}%
             </div>
-            <div className={`absolute -bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-md text-xs font-black uppercase tracking-[0.2em] transform transition-all duration-300 ${visibilityScore < 50 ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
-              visibilityScore < 80 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+            <div className={`absolute -bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transform transition-all duration-300 shadow-sm ${visibilityScore < 50 ? 'bg-rose-50 text-rose-700 border border-rose-100' :
+              visibilityScore < 80 ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                'bg-emerald-50 text-emerald-700 border border-emerald-100'
               }`}>
               {visibilityScore < 50 ? 'CRITICAL_FAILURE' : visibilityScore < 80 ? 'HIGH_RISK' : 'OPTIMAL_REACH'}
             </div>
           </div>
 
           {/* SPRINT GOAL */}
-          <div className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl mb-8">
-            <div className="flex justify-between items-center mb-3 text-xs font-black uppercase tracking-widest text-white/50">
+          <div className="w-full max-w-md bg-slate-50 border border-slate-100 p-6 rounded-2xl mb-8">
+            <div className="flex justify-between items-center mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
               <span className="flex items-center gap-2">
-                <Target className="h-3.5 w-3.5 text-emerald-500" />
+                <Target className="h-3.5 w-3.5 text-emerald-600" />
                 Sprint Goal: 95% Visibility
               </span>
-              <span className="text-emerald-400">{currentUser?.sprintExpiresAt ? `${Math.ceil((currentUser.sprintExpiresAt - Date.now()) / (1000 * 60 * 60 * 24))} Days Left` : 'Active'}</span>
+              <span className="text-emerald-600 font-bold">{currentUser?.sprintExpiresAt ? `${Math.ceil((currentUser.sprintExpiresAt - Date.now()) / (1000 * 60 * 60 * 24))} Days Left` : 'Active'}</span>
             </div>
-            <div className="w-full bg-slate-800 h-3 rounded-full overflow-hidden p-[2px] border border-slate-700">
+            <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-indigo-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-1000"
+                className="h-full rounded-full bg-slate-900 transition-all duration-1000"
                 style={{ width: `${Math.min(100, (visibilityScore / 95) * 100)}%` }}
               ></div>
             </div>
@@ -168,7 +167,7 @@ export function MissionControl({ onNavigate, onUpload }: MissionControlProps) {
             <Button
               onClick={onUpload}
               variant="outline"
-              className="h-14 px-10 border-2 border-white/20 text-white hover:bg-white/10 font-black rounded-2xl uppercase tracking-widest text-xs transition-all backdrop-blur-sm"
+              className="h-14 px-10 border-2 border-slate-200 text-slate-900 hover:bg-slate-100 font-black rounded-2xl uppercase tracking-widest text-xs transition-all"
             >
               <Plus className="h-4 w-4 mr-2" />
               Upload New

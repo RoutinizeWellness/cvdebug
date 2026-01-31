@@ -493,6 +493,12 @@ export default function Dashboard() {
             {user?.id && <CVVersionAnalytics userId={user.id} />}
           </div>
         );
+      case 'applications':
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            <JobTrackerView />
+          </div>
+        );
       case 'settings':
         return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       case 'linkedin':
@@ -516,7 +522,7 @@ export default function Dashboard() {
       case 'writing-forge':
         return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
       case 'keyword-sniper':
-        return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
+        return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} setCurrentView={setCurrentView} />;
       case 'projects':
         if (selectedProject) {
           return (

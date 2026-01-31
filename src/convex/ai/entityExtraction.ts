@@ -104,7 +104,9 @@ export function extractJobEntities(jobDescription: string): JobDescriptionEntiti
   // Extract Hard Skills
   Object.entries(HARD_SKILLS_DATABASE).forEach(([category, skills]) => {
     skills.forEach(skill => {
-      const regex = new RegExp(`\\b${skill}\\b`, 'gi');
+      // Escape special characters for regex (e.g. C++ -> C\+\+)
+      const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escapedSkill}\\b`, 'gi');
       const matches = originalText.match(regex);
 
       if (matches) {
@@ -172,7 +174,9 @@ export function extractJobEntities(jobDescription: string): JobDescriptionEntiti
 
   // Extract Certifications
   CERTIFICATION_PATTERNS.forEach(cert => {
-    const regex = new RegExp(`\\b${cert}\\b`, 'gi');
+    // Escape special characters for regex
+    const escapedCert = cert.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedCert}\\b`, 'gi');
     if (regex.test(originalText)) {
       const context = extractContext(originalText, cert);
 

@@ -698,7 +698,20 @@ export const generateSanitizedVersion = mutation({
     // ENFORCEMENT: PDF Sanitization is locked for Free users (unless they unlocked this specific resume)
     // Single Scan users have detailsUnlocked=true for their purchased resume
     // Career Sprint users have detailsUnlocked=true for all resumes
-    if (!resume.detailsUnlocked) {
+
+    // Check user plan first as backup for old resumes
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    const hasPaidPlan = user && (
+      user.subscriptionTier === "single_scan" ||
+      user.subscriptionTier === "single_debug_fix" ||
+      user.subscriptionTier === "interview_sprint"
+    );
+
+    if (!resume.detailsUnlocked && !hasPaidPlan) {
       throw new Error("PLAN_RESTRICTION: Upgrade to Single Scan or Career Sprint to unlock PDF Sanitization.");
     }
 
@@ -919,10 +932,23 @@ export const applyRewriteToResume = mutation({
     // Apply the rewritten text to the original CV
     await ctx.db.patch(args.id, {
       ocrText: resume.rewrittenText,
+      status: "processing", // Set status to processing so user sees it's re-analyzing
       // Keep rewrittenText so user can see history
     });
 
-    console.log("[applyRewriteToResume] Rewrite applied to resume:", args.id);
+    // Extract internal functions for scheduling
+    const { internal } = require("./_generated/api");
+    const internalAny = internal as any;
+
+    // Trigger re-analysis automatically
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+      id: args.id,
+      ocrText: resume.rewrittenText,
+      jobDescription: resume.jobDescription,
+      isPremium: true, // Rewrites are a premium feature, so analysis should be deep
+    });
+
+    console.log("[applyRewriteToResume] Rewrite applied and re-analysis scheduled for resume:", args.id);
     return { success: true };
   },
 });

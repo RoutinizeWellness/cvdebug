@@ -13,6 +13,7 @@ import { KeywordCloud } from "./linkedin/KeywordCloud";
 import { HeadlineOptimizer } from "./linkedin/HeadlineOptimizer";
 import { QuickFixList } from "./linkedin/QuickFixList";
 import { LinkedInHeader } from "./linkedin/LinkedInHeader";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
 

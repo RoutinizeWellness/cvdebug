@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { KeywordSniperTool } from "./KeywordSniperTool";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Target, Lock, Diamond, Sparkles, Eye, TrendingUp, RefreshCw, Shield, AlertCircle, CheckCircle2, Search } from "lucide-react";
+import { ArrowLeft, Target, Lock, Diamond, Sparkles, Eye, TrendingUp, RefreshCw, Shield, AlertCircle, CheckCircle2, Search, Plus, Loader2, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { Alert } from "@/components/ui/alert";
 import { KeywordExamplesModal } from "./KeywordExamplesModal";
@@ -19,9 +19,10 @@ const apiAny = api;
 interface KeywordSniperViewProps {
   onBack: () => void;
   onUpgrade?: () => void;
+  setCurrentView?: (view: string) => void;
 }
 
-export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps) {
+export function KeywordSniperView({ onBack, onUpgrade, setCurrentView }: KeywordSniperViewProps) {
   const { t } = useI18n();
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.applications.getApplications);
@@ -37,6 +38,8 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   // Search Tool State
   const [manualKeywords, setManualKeywords] = useState("");
   const [verificationResult, setVerificationResult] = useState<{ keyword: string, found: boolean }[]>([]);
+  const [jdInput, setJdInput] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const featureAccess = useQuery(apiAny.planAccess.getFeatureAccess);
   const hasSniperAccess = featureAccess?.features?.keywordSniper || false;
@@ -106,6 +109,52 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
 
   const bullets = extractBulletPoints(masterResume?.ocrText || "");
   const currentBullet = bullets[0] || "Led cross-functional teams to deliver projects on time and within budget, resulting in increased efficiency.";
+
+  const createApplication = useMutation(apiAny.applications.createApplication);
+  const projects = useQuery(apiAny.projects.getProjects);
+
+  const handleAnalyzeJD = async () => {
+    if (!jdInput.trim()) {
+      toast.error("Please paste a job description first.");
+      return;
+    }
+
+    if (!masterResume) {
+      toast.error("Please upload a resume first.");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      // Find or create a project
+      let projectId = masterResume.projectId;
+      if (!projectId && projects && projects.length > 0) {
+        projectId = projects[0]._id;
+      }
+
+      await createApplication({
+        projectId,
+        jobDescriptionText: jdInput,
+        companyName: "Target Company",
+        jobTitle: masterResume.jobTitle || "Target Role",
+      });
+
+      toast.success("Job analyzed! Loading Keyword Sniper...");
+      setJdInput("");
+    } catch (error: any) {
+      console.error(error);
+      if (error.message?.includes("PLAN_RESTRICTION")) {
+        toast.error("Subscription Required", {
+          description: "Upgrade to Career Sprint to use Job Analysis."
+        });
+        onUpgrade?.();
+      } else {
+        toast.error("Failed to analyze job description.");
+      }
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   // Mutations
   const updateResumeContent = useMutation(apiAny.resumes.updateResumeContent);
@@ -178,27 +227,45 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         <p className="text-[#64748B] max-w-sm mb-8 leading-relaxed">
           {t.keywordSniper.noJobDescriptionDesc}
         </p>
-        <div className="bg-white border-2 border-slate-100 rounded-2xl p-6 max-w-md mb-8 text-left shadow-xl shadow-slate-100/50">
-          <p className="text-sm font-black text-[#0F172A] mb-4 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-indigo-500" />
-            {t.keywordSniper.howToUseTitle}
-          </p>
-          <ul className="space-y-3">
-            {[t.keywordSniper.howToStep1, t.keywordSniper.howToStep2, t.keywordSniper.howToStep3, t.keywordSniper.howToStep4].map((step, i) => (
-              <li key={i} className="text-xs text-[#475569] flex gap-3">
-                <span className="h-5 w-5 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-[10px] font-black shrink-0">{i + 1}</span>
-                <span className="leading-tight">{step}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="w-full max-w-xl bg-white border-2 border-slate-100 rounded-3xl p-6 mb-8 shadow-xl shadow-slate-200/50">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-8 w-8 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center">
+              <Plus className="h-4 w-4" />
+            </div>
+            <h4 className="font-black text-[#0F172A] uppercase tracking-tight text-sm">Paste Job Description</h4>
+          </div>
+          <textarea
+            value={jdInput}
+            onChange={(e) => setJdInput(e.target.value)}
+            placeholder="Paste the job description here to extract critical keywords..."
+            className="w-full h-40 p-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white focus:outline-none text-sm transition-all custom-scrollbar mb-4"
+          />
+          <Button
+            onClick={handleAnalyzeJD}
+            disabled={isAnalyzing || !jdInput.trim()}
+            className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl shadow-lg shadow-indigo-200"
+          >
+            {isAnalyzing ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Analyzing...</> : <><Sparkles className="h-4 w-4 mr-2" /> Start Keyword Analysis</>}
+          </Button>
         </div>
-        <Button
-          onClick={onBack}
-          className="h-12 px-8 bg-[#0F172A] text-white font-bold rounded-xl shadow-xl shadow-slate-200"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          {t.keywordSniper.backToDashboard}
-        </Button>
+
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button
+            onClick={() => setCurrentView?.('applications')}
+            className="h-12 px-8 bg-[#0F172A] hover:bg-slate-800 text-white font-bold rounded-xl shadow-xl shadow-slate-200"
+          >
+            <Briefcase className="h-4 w-4 mr-2" />
+            Access Application Tracker
+          </Button>
+          <Button
+            onClick={onBack}
+            variant="outline"
+            className="h-12 px-8 border-slate-200 text-slate-600 font-bold rounded-xl"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            {t.keywordSniper.backToDashboard}
+          </Button>
+        </div>
       </div>
     );
   }

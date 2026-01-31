@@ -123,7 +123,7 @@ export const canSendEmail = internalQuery({
 
     // Check global unsubscribe
     if (user.unsubscribedFromMarketing &&
-        !['ACCOUNT_SECURITY', 'BILLING'].includes(category)) {
+      !['ACCOUNT_SECURITY', 'BILLING'].includes(category)) {
       return {
         canSend: false,
         reason: "User unsubscribed from marketing emails"
@@ -218,23 +218,23 @@ export const getEmailPreferences = query({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
       .first();
 
-    if (!user) return null;
-
     const preferences: Record<EmailCategory, boolean> = {} as any;
+    const tier = user?.subscriptionTier || "free";
+    const unsubscribed = user?.unsubscribedFromMarketing || false;
 
     // Build preferences object with defaults
     for (const [category, config] of Object.entries(EMAIL_CATEGORIES)) {
-      const customPrefs = user.emailPreferences as Record<string, boolean> | undefined;
+      const customPrefs = user?.emailPreferences as Record<string, boolean> | undefined;
       const isEnabledByUser = customPrefs?.[category] !== false; // Default true unless explicitly disabled
-      const isAvailableForTier = config.tiers.includes(user.subscriptionTier as UserTier);
+      const isAvailableForTier = config.tiers.includes(tier as UserTier);
 
       preferences[category as EmailCategory] = isEnabledByUser && isAvailableForTier;
     }
 
     return {
       preferences,
-      unsubscribedFromMarketing: user.unsubscribedFromMarketing || false,
-      tier: user.subscriptionTier,
+      unsubscribedFromMarketing: unsubscribed,
+      tier,
     };
   },
 });

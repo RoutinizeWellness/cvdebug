@@ -179,17 +179,34 @@ export function InlineResumeEditor({
   const quickFixAll = () => {
     let newContent = content;
 
-    // Quick fixes for common issues
-    formatIssues.slice(0, 3).forEach(issue => {
-      if (issue.issue.toLowerCase().includes('date')) {
-        // Standardize date format
-        newContent = newContent.replace(/(\d{4})\s*-\s*(\d{4})/g, '$1 - $2');
-        newContent = newContent.replace(/(\w{3})\.\s*(\d{4})/g, '$1 $2');
-      }
+    // 1. Standardize date formats (2020-2022 -> 2020 - 2022)
+    newContent = newContent.replace(/(\d{4})\s*-\s*(\d{4})/g, '$1 - $2');
+    newContent = newContent.replace(/(\w{3})\.\s*(\d{4})/g, '$1 $2');
+
+    // 2. Standardize bullet points (use standard bullet •)
+    newContent = newContent.replace(/^[*-]\s/gm, '• ');
+
+    // 3. Fix contact info formatting (ensure spaces around separators)
+    newContent = newContent.replace(/\|/g, ' | ');
+    newContent = newContent.replace(/\s+/g, ' '); // Clean up extra spaces from step 3
+
+    // 4. Ensure section headers are uppercase and distinct (heuristic)
+    const headers = ['EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS', 'SUMMARY', 'CERTIFICATIONS'];
+    headers.forEach(header => {
+      const regex = new RegExp(`^\\s*${header}\\s*$`, 'gmi');
+      newContent = newContent.replace(regex, `\n${header}\n`);
     });
 
-    setContent(newContent);
-    toast.success("✓ Applied quick fixes!");
+    // 5. Trim extra newlines
+    newContent = newContent.replace(/\n{3,}/g, '\n\n').trim();
+
+    if (newContent !== content) {
+      setContent(newContent);
+      setHasChanges(true);
+      toast.success("✓ Applied intelligent format fixes!");
+    } else {
+      toast.info("No common format issues detected.");
+    }
   };
 
   return (

@@ -437,21 +437,37 @@ function initializeRoleEmbeddings() {
   // For now, we generate representative embeddings
 
   const roles = [
-    "software engineer full stack developer react typescript node.js api backend frontend",
-    "data scientist machine learning python tensorflow pytorch sql analytics",
-    "product manager roadmap strategy stakeholder agile scrum metrics kpi",
-    "marketing manager campaigns seo sem growth analytics conversion digital",
-    "sales sdr bdr outbound cold calling prospecting pipeline quota",
-    "nursing registered nurse patient care icu clinical medical healthcare"
+    "software engineer full stack developer react typescript node.js api backend frontend javascript java c# go rust",
+    "software engineer mobile developer ios android swift kotlin react native flutter",
+    "software engineer devops cloud aws azure gcp docker kubernetes terraform ci/cd",
+    "data scientist machine learning python tensorflow pytorch sql analytics big data spark",
+    "data engineer etl sql python airflow snowflake warehouse pipeline",
+    "product manager roadmap strategy stakeholder agile scrum metrics kpi backlog",
+    "project manager pmp prince2 budget schedule resource planning",
+    "marketing manager campaigns seo sem growth analytics conversion digital social media email",
+    "sales sdr bdr outbound cold calling prospecting pipeline quota account executive",
+    "design ux ui product designer figma sketch adobe mockup prototyper research",
+    "cybersecurity security analyst soc pentest firewall encryption compliance",
+    "nursing registered nurse patient care icu clinical medical healthcare hospital",
+    "finance accountant analyst audit tax cpa banking investment portfolio",
+    "hr human resources recruiter talent acquisition payroll onboarding culture"
   ];
 
   const roleNames = [
     "Software Engineering",
+    "Software Engineering (Mobile)",
+    "Cloud & DevOps",
     "Data Science",
+    "Data Engineering",
     "Product Management",
+    "Project/Program Management",
     "Marketing",
     "Sales (SDR/BDR)",
-    "Nursing"
+    "Design & Creative",
+    "Cybersecurity",
+    "Healthcare/Medical",
+    "Finance/Fintech",
+    "Human Resources"
   ];
 
   roles.forEach((roleText, idx) => {
