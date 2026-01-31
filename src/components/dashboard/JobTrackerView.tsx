@@ -114,11 +114,14 @@ export function JobTrackerView({ onCreateNew }: JobTrackerViewProps) {
                 <div className="flex items-center gap-4 text-sm text-[#64748B]">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    {new Date(job.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
+                    {(() => {
+                      const d = job.createdAt ? new Date(job.createdAt) : new Date();
+                      return isNaN(d.getTime()) ? "Unknown Date" : d.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      });
+                    })()}
                   </div>
                   <div className="text-[#E2E8F0]">•</div>
                   <Badge variant="outline" className="bg-[#F8FAFC] border-[#E2E8F0] text-[#64748B]">

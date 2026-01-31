@@ -45,11 +45,11 @@ export function KeywordSniperView({ onBack, onUpgrade, setCurrentView }: Keyword
   const hasSniperAccess = featureAccess?.features?.keywordSniper || false;
   const hasCareerSprint = featureAccess?.tier === "interview_sprint"; // For upsell display if applicable
 
-  // PRIORITY: Get application with job description (has missing keywords)
-  const applicationWithJob = applications?.find((app: any) =>
-    app.jobDescriptionText &&
-    (app.missingKeywords?.length || app.matchedKeywords?.length)
-  );
+  // PRIORITY: Get MOST RECENT application with job description
+  // Fix: Don't require keywords to exist yet, so we can show a loading state
+  const applicationWithJob = applications
+    ?.filter((app: any) => app.jobDescriptionText)
+    .sort((a: any, b: any) => (b._creationTime || 0) - (a._creationTime || 0))[0];
 
   // Fallback: Get the master resume if no application exists
   const masterResume = resumes?.find((r: any) =>
@@ -214,10 +214,33 @@ export function KeywordSniperView({ onBack, onUpgrade, setCurrentView }: Keyword
   }
 
   // Check if we have the necessary data for keyword sniper
-  const hasJobDescription = applicationWithJob?.jobDescriptionText;
+  const hasJobDescription = !!applicationWithJob?.jobDescriptionText;
   const hasKeywords = missingKeywords.length > 0 || matchedKeywords.length > 0;
 
-  if (!hasJobDescription || !hasKeywords) {
+  // New State: Processing
+  // If we have a JD but NO keywords yet, it means the backend is still processing
+  const isProcessing = hasJobDescription && !hasKeywords;
+
+  if (isProcessing) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 text-center">
+        <div className="relative">
+          <div className="h-24 w-24 border-4 border-indigo-100 rounded-full animate-spin border-t-indigo-600"></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Target className="h-10 w-10 text-indigo-600 animate-pulse" />
+          </div>
+        </div>
+        <div>
+          <h3 className="text-2xl font-black text-[#0F172A] mb-2">{t.keywordSniper.analyzingTitle || "Analyzing Job Description..."}</h3>
+          <p className="text-slate-500 max-w-sm mx-auto">
+            Our AI is extracting critical keywords and skill gaps. This usually takes 5-10 seconds.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasJobDescription) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] text-center px-6">
         <div className="h-24 w-24 bg-slate-50 rounded-3xl flex items-center justify-center mb-8 shadow-inner">

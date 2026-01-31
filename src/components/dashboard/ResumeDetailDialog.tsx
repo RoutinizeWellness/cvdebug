@@ -830,8 +830,15 @@ export function ResumeDetailDialog({
                         history={displayResume.scoreHistory?.length > 0 ? displayResume.scoreHistory.map((h: any, i: number) => ({
                           version: i + 1,
                           score: h.score,
-                          date: new Date(h.timestamp).toLocaleDateString()
-                        })) : [{ version: 1, score: displayResume.score, date: 'Initial Scan' }]}
+                          timestamp: h.timestamp || Date.now(),
+                          changes: h.changes || ["Optimization"]
+                        })) : [{
+                          version: 1,
+                          score: displayResume.score || 0,
+                          timestamp: displayResume._creationTime || Date.now(),
+                          changes: ["Initial Scan"]
+                        }]}
+                        currentScore={displayResume.score || 0}
                       />
                     </div>
                   </TabsContent>

@@ -14,9 +14,12 @@ interface ScoreProgressChartProps {
 }
 
 export function ScoreProgressChart({ history, currentScore }: ScoreProgressChartProps) {
+  // Ensure history is an array
+  const safeHistory = Array.isArray(history) ? history : [];
+
   // If no history, create initial entry
-  const scoreHistory = history.length > 0 ? history : [
-    { version: 1, score: currentScore, timestamp: Date.now(), changes: ["Initial scan"] }
+  const scoreHistory = safeHistory.length > 0 ? safeHistory : [
+    { version: 1, score: currentScore || 0, timestamp: Date.now(), changes: ["Initial scan"] }
   ];
 
   const maxScore = Math.max(...scoreHistory.map(h => h.score), 100);
@@ -48,10 +51,10 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
 
         {/* Trend Indicator */}
         <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${improvement > 0
-            ? 'bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800'
-            : improvement < 0
-              ? 'bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800'
-              : 'bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700'
+          ? 'bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800'
+          : improvement < 0
+            ? 'bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800'
+            : 'bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700'
           }`}>
           {improvement > 0 ? (
             <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -62,10 +65,10 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
           )}
           <div>
             <div className={`text-2xl font-black ${improvement > 0
-                ? 'text-green-600 dark:text-green-400'
-                : improvement < 0
-                  ? 'text-red-600 dark:text-red-400'
-                  : 'text-slate-600 dark:text-slate-400'
+              ? 'text-green-600 dark:text-green-400'
+              : improvement < 0
+                ? 'text-red-600 dark:text-red-400'
+                : 'text-slate-600 dark:text-slate-400'
               }`}>
               {improvement > 0 ? '+' : ''}{improvement}%
             </div>
@@ -162,8 +165,8 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
               >
                 {/* Point */}
                 <div className={`w-4 h-4 rounded-full border-3 ${isLast
-                    ? 'bg-[#64748B] border-white dark:border-slate-900 ring-4 ring-[#64748B]/30'
-                    : 'bg-white dark:bg-slate-800 border-[#64748B]'
+                  ? 'bg-[#64748B] border-white dark:border-slate-900 ring-4 ring-[#64748B]/30'
+                  : 'bg-white dark:bg-slate-800 border-[#64748B]'
                   } cursor-pointer hover:scale-150 transition-transform shadow-lg`}></div>
 
                 {/* Tooltip */}
@@ -174,7 +177,10 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
                       <div key={i} className="text-slate-300 dark:text-slate-400">• {change}</div>
                     ))}
                     <div className="text-slate-400 dark:text-slate-500 text-[10px] mt-1">
-                      {new Date(item.timestamp).toLocaleDateString()}
+                      {(() => {
+                        const timestamp = item.timestamp ? new Date(item.timestamp) : new Date();
+                        return isNaN(timestamp.getTime()) ? "Just now" : timestamp.toLocaleDateString();
+                      })()}
                     </div>
                   </div>
                   <div className="w-2 h-2 bg-[#0F172A] dark:bg-slate-700 rotate-45 absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
