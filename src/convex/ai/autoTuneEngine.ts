@@ -157,15 +157,16 @@ async function generateImprovedBullet(
   const injectMetrics = (text: string): string => {
     if (weaknessReasons.includes('no_metrics')) {
       // Template metrics based on common scenarios
+      // Template metrics - UPDATED to be PLACEHOLDERS, not fake data
       const metricTemplates = [
-        'increasing efficiency by 30%',
-        'reducing costs by $50K annually',
-        'serving 10K+ daily users',
-        'improving performance by 2x',
-        'processing 1M+ transactions',
-        'supporting team of 15+ engineers',
-        'handling 500K+ monthly active users',
-        'accelerating delivery by 40%'
+        '[Result: increased efficiency by X%]',
+        '[Impact: saved $Xk annually]',
+        '[Scale: served X+ users]',
+        '[Outcome: improved performance by X%]',
+        '[Volume: processed X transactions]',
+        '[Leadership: supported team of X]',
+        '[Growth: grew userbase by X%]',
+        '[Speed: accelerated delivery by X%]'
       ];
 
       const metric = metricTemplates[Math.floor(Math.random() * metricTemplates.length)];

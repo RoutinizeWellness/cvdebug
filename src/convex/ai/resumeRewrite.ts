@@ -169,7 +169,7 @@ export const generateBulletPoints = action({
       });
 
       const result = extractJSON(response);
-      
+
       // Handle the new specific format (Performance, Business, Leadership)
       if (result && (result.performance || result.business || result.leadership)) {
         const bullets = [];
@@ -183,7 +183,7 @@ export const generateBulletPoints = action({
       if (result && !Array.isArray(result) && result.bulletPoints) {
         return result.bulletPoints;
       }
-      
+
       // If it's already an array
       if (Array.isArray(result)) {
         return result;
@@ -198,7 +198,7 @@ export const generateBulletPoints = action({
       ];
     } catch (primaryError) {
       console.error("Primary AI (Gemini) failed for bullet points, trying fallback:", primaryError);
-      
+
       try {
         // Fallback: DeepSeek or Llama
         const fallbackModel = "deepseek/deepseek-chat";
@@ -209,7 +209,7 @@ export const generateBulletPoints = action({
         });
 
         const result = extractJSON(response);
-        
+
         // Handle the new specific format (Performance, Business, Leadership)
         if (result && (result.performance || result.business || result.leadership)) {
           const bullets = [];
@@ -222,7 +222,7 @@ export const generateBulletPoints = action({
         if (result && !Array.isArray(result) && result.bulletPoints) {
           return result.bulletPoints;
         }
-        
+
         if (Array.isArray(result)) {
           return result;
         }
@@ -302,48 +302,48 @@ function generateMLResumeRewrite(ocrText: string, jobDescription?: string): stri
       // Development/Engineering metrics
       if (/\b(?:develop|build|create|implement|engineer|code|program)\b/gi.test(content)) {
         if (/\b(?:api|service|system|platform|infrastructure)\b/gi.test(content)) {
-          enhancedLine += ", handling 50K+ requests/day with 99.9% uptime and <100ms latency";
+          enhancedLine += ", handling [Metric: high-volume requests/day] with [Metric: 99.X%] uptime";
         } else if (/\b(?:feature|functionality|module)\b/gi.test(content)) {
-          enhancedLine += ", increasing user engagement by 45% and reducing bounce rate by 30%";
+          enhancedLine += ", increasing [Metric: user engagement] by [X%]";
         } else {
-          enhancedLine += ", improving system efficiency by 40% and reducing development time by 3 weeks";
+          enhancedLine += ", improving system efficiency by [X%] and reducing development time";
         }
       }
       // Leadership/Management metrics
       else if (/\b(?:manage|lead|coordinate|direct|supervise|oversee)\b/gi.test(content)) {
         if (/\b(?:team|engineers|developers|members)\b/gi.test(content)) {
-          enhancedLine += ", leading team of 8+ engineers to 95% on-time delivery and 98% code review approval";
+          enhancedLine += ", leading team of [X] engineers to [Metric: on-time delivery] success";
         } else if (/\b(?:project|initiative|program)\b/gi.test(content)) {
-          enhancedLine += ", delivering $2M+ project 2 weeks ahead of schedule and 15% under budget";
+          enhancedLine += ", delivering [Metric: $Value] project [Metric: timeline achievement]";
         } else {
-          enhancedLine += ", increasing team productivity by 50% and reducing turnover by 25%";
+          enhancedLine += ", increasing team productivity by [X%] and reducing turnover";
         }
       }
       // Optimization/Performance metrics
       else if (/\b(?:optim|improve|enhance|refactor|streamline)\b/gi.test(content)) {
         if (/\b(?:database|query|sql|storage)\b/gi.test(content)) {
-          enhancedLine += ", reducing query time by 70% and database costs by $50K annually";
+          enhancedLine += ", reducing query time by [X%] and database costs";
         } else if (/\b(?:performance|speed|latency)\b/gi.test(content)) {
-          enhancedLine += ", achieving 3x faster load times and improving user satisfaction by 60%";
+          enhancedLine += ", achieving [X]x faster load times and improving user satisfaction";
         } else {
-          enhancedLine += ", resulting in 55% efficiency gain and $120K in annual cost savings";
+          enhancedLine += ", resulting in [X%] efficiency gain and cost savings";
         }
       }
       // Analysis/Data metrics
       else if (/\b(?:analyz|research|evaluat|study|investigate)\b/gi.test(content)) {
         if (/\b(?:data|metrics|analytics|insights)\b/gi.test(content)) {
-          enhancedLine += ", processing 500GB+ data to uncover insights driving $800K+ in revenue growth";
+          enhancedLine += ", processing [Volume: Data Size] to uncover insights driving [Impact]";
         } else {
-          enhancedLine += ", influencing $1M+ strategic decisions through data-driven recommendations";
+          enhancedLine += ", influencing strategic decisions through data-driven recommendations";
         }
       }
       // Design/Architecture metrics
       else if (/\b(?:design|architect|plan|structure)\b/gi.test(content)) {
-        enhancedLine += ", supporting 25K+ active users and scaling to 5x traffic with zero downtime";
+        enhancedLine += ", supporting [X] active users and scaling to [X]x traffic";
       }
       // Testing/Quality metrics
       else if (/\b(?:test|qa|quality|debug|fix)\b/gi.test(content)) {
-        enhancedLine += ", reducing production bugs by 65% and achieving 95%+ test coverage";
+        enhancedLine += ", reducing production bugs by [X%] and increasing test coverage";
       }
     }
 
