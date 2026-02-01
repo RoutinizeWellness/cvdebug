@@ -290,62 +290,9 @@ function generateMLResumeRewrite(ocrText: string, jobDescription?: string): stri
       }
     }
 
-    // Detect bullet points
-    const isBullet = /^[\s]*[•\-\*]/.test(line);
-    const hasNumbers = /\d/.test(line);
-    const lineLength = line.length;
-
-    if (isBullet && !hasNumbers && lineLength > 25) {
-      // Analyze content for intelligent metric addition
-      const content = line.toLowerCase();
-
-      // Development/Engineering metrics
-      if (/\b(?:develop|build|create|implement|engineer|code|program)\b/gi.test(content)) {
-        if (/\b(?:api|service|system|platform|infrastructure)\b/gi.test(content)) {
-          enhancedLine += ", handling [Metric: high-volume requests/day] with [Metric: 99.X%] uptime";
-        } else if (/\b(?:feature|functionality|module)\b/gi.test(content)) {
-          enhancedLine += ", increasing [Metric: user engagement] by [X%]";
-        } else {
-          enhancedLine += ", improving system efficiency by [X%] and reducing development time";
-        }
-      }
-      // Leadership/Management metrics
-      else if (/\b(?:manage|lead|coordinate|direct|supervise|oversee)\b/gi.test(content)) {
-        if (/\b(?:team|engineers|developers|members)\b/gi.test(content)) {
-          enhancedLine += ", leading team of [X] engineers to [Metric: on-time delivery] success";
-        } else if (/\b(?:project|initiative|program)\b/gi.test(content)) {
-          enhancedLine += ", delivering [Metric: $Value] project [Metric: timeline achievement]";
-        } else {
-          enhancedLine += ", increasing team productivity by [X%] and reducing turnover";
-        }
-      }
-      // Optimization/Performance metrics
-      else if (/\b(?:optim|improve|enhance|refactor|streamline)\b/gi.test(content)) {
-        if (/\b(?:database|query|sql|storage)\b/gi.test(content)) {
-          enhancedLine += ", reducing query time by [X%] and database costs";
-        } else if (/\b(?:performance|speed|latency)\b/gi.test(content)) {
-          enhancedLine += ", achieving [X]x faster load times and improving user satisfaction";
-        } else {
-          enhancedLine += ", resulting in [X%] efficiency gain and cost savings";
-        }
-      }
-      // Analysis/Data metrics
-      else if (/\b(?:analyz|research|evaluat|study|investigate)\b/gi.test(content)) {
-        if (/\b(?:data|metrics|analytics|insights)\b/gi.test(content)) {
-          enhancedLine += ", processing [Volume: Data Size] to uncover insights driving [Impact]";
-        } else {
-          enhancedLine += ", influencing strategic decisions through data-driven recommendations";
-        }
-      }
-      // Design/Architecture metrics
-      else if (/\b(?:design|architect|plan|structure)\b/gi.test(content)) {
-        enhancedLine += ", supporting [X] active users and scaling to [X]x traffic";
-      }
-      // Testing/Quality metrics
-      else if (/\b(?:test|qa|quality|debug|fix)\b/gi.test(content)) {
-        enhancedLine += ", reducing production bugs by [X%] and increasing test coverage";
-      }
-    }
+    // Pattern 2: Intelligent metric suggestions - DISABLED
+    // We do NOT add fake metrics. We only polish the prose.
+    // The previous logic (lines 293-349) which injected claims is removed.
 
     // Add JD keywords where relevant (SEO optimization)
     if (jdKeywords.length > 0 && isBullet && lineLength > 30) {

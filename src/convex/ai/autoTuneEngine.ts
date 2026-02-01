@@ -153,29 +153,9 @@ async function generateImprovedBullet(
     return { verb, subject: '', rest };
   };
 
-  // STEP 2: Inject metrics if missing
+  // STEP 2: Inject Metrics - DISABLED to avoid fake data or placeholders
   const injectMetrics = (text: string): string => {
-    if (weaknessReasons.includes('no_metrics')) {
-      // Template metrics based on common scenarios
-      // Template metrics - UPDATED to be PLACEHOLDERS, not fake data
-      const metricTemplates = [
-        '[Result: increased efficiency by X%]',
-        '[Impact: saved $Xk annually]',
-        '[Scale: served X+ users]',
-        '[Outcome: improved performance by X%]',
-        '[Volume: processed X transactions]',
-        '[Leadership: supported team of X]',
-        '[Growth: grew userbase by X%]',
-        '[Speed: accelerated delivery by X%]'
-      ];
-
-      const metric = metricTemplates[Math.floor(Math.random() * metricTemplates.length)];
-
-      // Insert metric at the end if not present
-      if (!text.includes('%') && !text.includes('$') && !text.includes('K+') && !text.includes('x')) {
-        text = text.replace(/\.$/, '') + ', ' + metric;
-      }
-    }
+    // We strictly respect user's real data. We do not invent numbers.
     return text;
   };
 
